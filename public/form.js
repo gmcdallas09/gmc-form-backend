@@ -1,3 +1,4 @@
+console.log("form.js loaded");
 document.getElementById("form-app-1abc").addEventListener("submit", async (e) => {
     e.preventDefault(); // stop browser from doing GET /
 
