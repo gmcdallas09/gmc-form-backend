@@ -1137,7 +1137,7 @@
 
                 var data = formDataToObject(form);
 
-                fetch('/submit', {
+                fetch("https://gmc-form-backend.onrender.com/", {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
