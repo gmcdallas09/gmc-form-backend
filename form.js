@@ -1,13 +1,14 @@
 console.log("form.js loaded");
 
-// Utility: create a signature pad for any canvas
-function initSignaturePad(canvasId, clearBtnId) {
+function initSignaturePad(canvasId, clearBtnId, hiddenInputId) {
     const canvas = document.getElementById(canvasId);
     const clearBtn = document.getElementById(clearBtnId);
+    const hiddenInput = document.getElementById(hiddenInputId);
     const ctx = canvas.getContext("2d");
 
     let drawing = false;
 
+    // Resize canvas to match CSS size
     function resizeCanvas() {
         const data = canvas.toDataURL();
         canvas.width = canvas.offsetWidth;
@@ -21,16 +22,19 @@ function initSignaturePad(canvasId, clearBtnId) {
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    canvas.addEventListener("mousedown", () => { drawing = true });
+    // Mouse events
+    canvas.addEventListener("mousedown", () => drawing = true);
     canvas.addEventListener("mouseup", () => { drawing = false; ctx.beginPath() });
     canvas.addEventListener("mousemove", draw);
 
-    canvas.addEventListener("touchstart", () => { drawing = true });
+    // Touch events
+    canvas.addEventListener("touchstart", () => drawing = true);
     canvas.addEventListener("touchend", () => { drawing = false; ctx.beginPath() });
     canvas.addEventListener("touchmove", drawTouch);
 
     function draw(e) {
         if (!drawing) return;
+
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
         ctx.strokeStyle = "#000";
@@ -60,15 +64,21 @@ function initSignaturePad(canvasId, clearBtnId) {
         ctx.moveTo(x, y);
     }
 
+    // Clear button
     clearBtn.addEventListener("click", () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hiddenInput.value = "";
     });
 
-    return canvas;
+    // Save PNG to hidden input on submit
+    document.querySelector("form").addEventListener("submit", () => {
+        hiddenInput.value = canvas.toDataURL();
+    });
 }
 
 // Initialize all signature pads
 window.addEventListener("DOMContentLoaded", () => {
-    initSignaturePad("buyerSignature", "clearBuyer");
-    initSignaturePad("guarantor1Signature", "clearGuarantor1");
-    initSignature
+    initSignaturePad("buyer-sig-canvas", "buyer-sig-clear", "buyer-sig-data");
+    initSignaturePad("guar1-sig-canvas", "guar1-sig-clear", "guar1-sig-data");
+    initSignaturePad("guar2-sig-canvas", "guar2-sig-clear", "guar2-sig-data");
+});
