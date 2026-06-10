@@ -10,14 +10,14 @@ function initSignaturePad(canvasId, clearBtnId, hiddenInputId) {
 
     // Resize canvas to match CSS size
     function resizeCanvas() {
-        const data = canvas.toDataURL();
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+    const rect = canvas.getBoundingClientRect();
 
-        const img = new Image();
-        img.src = data;
-        img.onload = () => ctx.drawImage(img, 0, 0);
-    }
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
