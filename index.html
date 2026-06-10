@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GMC Account Application – Fillable Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#f5c518',
+                        goldDark: '#d4a910',
+                        goldLight: '#fef9e7',
+                        navy: '#1a2744',
+                        navyLight: '#2a3a5c',
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <style>
+        :root {
+            --gold: #f5c518;
+            --gold-dark: #d4a910;
+            --gold-light: #fef9e7;
+            --navy: #1a2744;
+            --navy-light: #2a3a5c;
+            --gray-bg: #f7f8fa;
+            --border: #ccc;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--gray-bg);
+            color: #222;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .section-heading {
+            background: transparent;
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            border-left: 4px solid var(--gold);
+            padding: 8px 14px;
+            margin-bottom: 16px;
+            margin-top: 28px;
+            letter-spacing: 0.03em;
+        }
+
+        label {
+            display: block;
+            color: #444;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+            letter-spacing: 0.02em;
+        }
+
+        label .req { color: #e53e3e; margin-left: 2px; }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 9px 11px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: #222;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.22);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .col-span-full { grid-column: 1 / -1; }
+
+        @media (max-width: 600px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .terms-box {
+            height: 200px;
+            overflow-y: auto;
+            background: #f3f4f6;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 14px 16px;
+            font-size: 0.85rem;
+            line-height: 1.65;
+            color: #333;
+        }
+
+        .cert-box {
+            height: 150px;
+            overflow-y: auto;
+            background: #f3f4f6;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 14px 16px;
+            font-size: 0.85rem;
+            line-height: 1.65;
+            color: #333;
+        }
+
+        .mini-card {
+            background: #f7f8fa;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--gold);
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            padding: 13px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .submit-btn:hover { background: var(--gold-dark); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid var(--navy);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .banner {
+            padding: 12px 16px;
+            border-radius: 4px;
+            font-size: 0.92rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .banner.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .banner.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .tab-btn {
+            padding: 10px 22px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #555;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--navy);
+            border-bottom-color: var(--gold);
+        }
+
+        .tab-btn:hover { color: var(--navy); }
+
+        .sig-line {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+            letter-spacing: 0.04em;
+        }
+
+        .grayed { color: #aaa; font-style: italic; }
+
+        .page-footer {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #888;
+            margin-top: 28px;
+            padding-top: 14px;
+            border-top: 1px solid #e5e7eb;
+            letter-spacing: 0.02em;
+        }
+
+        .helper-text {
+            font-size: 0.75rem;
+            color: #777;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .checkbox-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .checkbox-row label {
+            text-transform: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Signature pad styles */
+        .sig-pad-canvas {
+            display: block;
+            width: 100%;
+            height: 120px;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .sig-pad-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .sig-clear-btn {
+            background: transparent;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 4px 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .sig-clear-btn:hover {
+            background: #f3f4f6;
+            border-color: #888;
+        }
+    </style>
+</head>
+<body data-id="0" class="pb-8">
+    <app-icon data-id="1" hidden data-icon="file-text" data-palette="Yellow"></app-icon>
+
+    <!-- Header Banner -->
+    <header data-id="2" class="w-full" style="background: var(--gold);">
+        <div data-id="3" class="max-w-3xl mx-auto px-4 py-5 text-center">
+            <h1 data-id="4" class="text-2xl md:text-3xl font-extrabold tracking-wide" style="color: var(--navy);">GOLDEN MATTRESS CO., INC.</h1>
+            <p data-id="5" class="mt-1 text-sm" style="color: var(--navy); opacity: 0.82;">1240 Titan Drive · Dallas, TX 75247 · (214) 630-5588</p>
+        </div>
+    </header>
+
+    <!-- Tabs -->
+    <div data-id="6" class="max-w-3xl mx-auto px-2 md:px-0 mt-4">
+        <div data-id="7" class="flex gap-1 border-b border-gray-200" id="tab-bar-7xkw">
+            <button data-id="8" class="tab-btn active" id="tab-app-btn-3fzq" data-tab="app">Account Application</button>
+            <button data-id="9" class="tab-btn" id="tab-cert-btn-9tpx" data-tab="cert">TX Resale Certificate</button>
+        </div>
+    </div>
+
+    <main data-id="10" class="max-w-3xl mx-auto px-2 md:px-0 mt-4 mb-8">
+
+        <!-- ===================== TAB 1: Account Application ===================== -->
+        <div data-id="11" id="tab-app-panel-5mzr">
+            <div data-id="12" class="bg-white rounded-lg shadow-md p-5 md:p-8">
+                <!-- Banners -->
+                <div data-id="13" class="banner success" id="success-app-8kql"></div>
+                <div data-id="14" class="banner error" id="error-app-2vnr"></div>
+
+                <p data-id="15" class="text-sm italic text-gray-600 mb-5 leading-relaxed">The information provided by the applicant ("Buyer") in this Account Application and Master Purchase Agreement ("Agreement") is for the purposes of establishing a commercial credit account with Golden Mattress Co., Inc. ("Seller").</p>
+
+                <form data-id="16" id="form-app-1abc" method="POST" action="https://usebasin.com/f/5c267ff71c4a" enctype="multipart/form-data" novalidate>
+
+                    <input data-id="17" type="hidden" name="form_type" value="Account Application" />
+
+                    <!-- Buyer's Information -->
+                    <div data-id="18" class="section-heading">Buyer's Information</div>
+                    <div data-id="19" class="grid-2">
+                        <div data-id="20" class="col-span-full">
+                            <label data-id="21" for="legal-name-4rxa">Legal Business Name <span data-id="22" class="req">*</span></label>
+                            <input data-id="23" type="text" id="legal-name-4rxa" name="legal_business_name" required />
+                        </div>
+                        <div data-id="24" class="col-span-full">
+                            <label data-id="25" for="dba-name-7jkl">DBA or Assumed Names</label>
+                            <input data-id="26" type="text" id="dba-name-7jkl" name="dba_names" />
+                        </div>
+                        <div data-id="27" class="col-span-full">
+                            <label data-id="28" for="street-addr-3pqw">Street Address <span data-id="29" class="req">*</span></label>
+                            <input data-id="30" type="text" id="street-addr-3pqw" name="street_address" required />
+                        </div>
+                    </div>
+                    <div data-id="31" class="grid-3 mt-4">
+                        <div data-id="32">
+                            <label data-id="33" for="city-buyer-9xyz">City <span data-id="34" class="req">*</span></label>
+                            <input data-id="35" type="text" id="city-buyer-9xyz" name="city" required />
+                        </div>
+                        <div data-id="36">
+                            <label data-id="37" for="state-buyer-2abc">State <span data-id="38" class="req">*</span></label>
+                            <input data-id="39" type="text" id="state-buyer-2abc" name="state" required />
+                        </div>
+                        <div data-id="40">
+                            <label data-id="41" for="zip-buyer-5def">ZIP <span data-id="42" class="req">*</span></label>
+                            <input data-id="43" type="text" id="zip-buyer-5def" name="zip" required />
+                        </div>
+                    </div>
+                    <div data-id="44" class="grid-2 mt-4">
+                        <div data-id="45">
+                            <label data-id="46" for="phone-buyer-7ghi">Phone No <span data-id="47" class="req">*</span></label>
+                            <input data-id="48" type="tel" id="phone-buyer-7ghi" name="phone" required />
+                        </div>
+                        <div data-id="49">
+                            <label data-id="50" for="fax-buyer-1jkl">Fax</label>
+                            <input data-id="51" type="tel" id="fax-buyer-1jkl" name="fax" />
+                        </div>
+                    </div>
+                    <div data-id="52" class="mt-4">
+                        <label data-id="53" for="email-buyer-8mno">Email Address <span data-id="54" class="req">*</span></label>
+                        <input data-id="55" type="email" id="email-buyer-8mno" name="email" required />
+                    </div>
+                    <div data-id="56" class="grid-2 mt-4">
+                        <div data-id="57">
+                            <label data-id="58" for="state-inc-4pqr">State of Incorporation</label>
+                            <input data-id="59" type="text" id="state-inc-4pqr" name="state_of_incorporation" />
+                        </div>
+                        <div data-id="60">
+                            <label data-id="61" for="date-inc-6stu">Date of Incorporation</label>
+                            <input data-id="62" type="date" id="date-inc-6stu" name="date_of_incorporation" />
+                        </div>
+                    </div>
+                    <div data-id="63" class="mt-4">
+                        <label data-id="64" for="biz-struct-2vwx">Business Structure</label>
+                        <select data-id="65" id="biz-struct-2vwx" name="business_structure">
+                            <option data-id="66" value="">— Select —</option>
+                            <option data-id="67" value="Inc.">Inc.</option>
+                            <option data-id="68" value="LLC">LLC</option>
+                            <option data-id="69" value="Partnership">Partnership</option>
+                            <option data-id="70" value="Sole Proprietorship">Sole Proprietorship</option>
+                            <option data-id="71" value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Responsible Parties -->
+                    <div data-id="72" class="section-heading">Responsible Parties</div>
+                    <div data-id="73">
+                        <label data-id="74" for="owners-3yzb">Names of all owners/partners</label>
+                        <textarea data-id="75" id="owners-3yzb" name="owners_partners" rows="3"></textarea>
+                    </div>
+
+                    <!-- Bank Information -->
+                    <div data-id="76" class="section-heading">Bank Information</div>
+                    <p data-id="77" class="text-xs text-gray-500 mb-3 -mt-2">Bank(s) on which checks will be drawn on</p>
+                    <div data-id="78" class="grid-2">
+                        <div data-id="79">
+                            <label data-id="80" for="bank1-name-4cde">Bank 1 Name</label>
+                            <input data-id="81" type="text" id="bank1-name-4cde" name="bank1_name" />
+                        </div>
+                        <div data-id="82">
+                            <label data-id="83" for="bank1-acct-7fgh">Bank 1 Account No.</label>
+                            <input data-id="84" type="text" id="bank1-acct-7fgh" name="bank1_account" />
+                        </div>
+                        <div data-id="85">
+                            <label data-id="86" for="bank2-name-1ijk">Bank 2 Name</label>
+                            <input data-id="87" type="text" id="bank2-name-1ijk" name="bank2_name" />
+                        </div>
+                        <div data-id="88">
+                            <label data-id="89" for="bank2-acct-5lmn">Bank 2 Account No.</label>
+                            <input data-id="90" type="text" id="bank2-acct-5lmn" name="bank2_account" />
+                        </div>
+                    </div>
+                    <div data-id="91" class="mt-4">
+                        <label data-id="92" for="bank-contact-9opq">Bank Contact Name &amp; Number</label>
+                        <input data-id="93" type="text" id="bank-contact-9opq" name="bank_contact" />
+                    </div>
+
+                    <!-- Authorized Persons -->
+                    <div data-id="94" class="section-heading">Authorized Persons on Account</div>
+                    <div data-id="95">
+                        <label data-id="96" for="auth-purchase-2rst">All persons authorized to purchase</label>
+                        <textarea data-id="97" id="auth-purchase-2rst" name="authorized_purchasers" rows="2"></textarea>
+                    </div>
+                    <div data-id="98" class="mt-4">
+                        <label data-id="99" for="auth-checks-6uvw">All persons authorized to sign checks</label>
+                        <textarea data-id="100" id="auth-checks-6uvw" name="authorized_check_signers" rows="2"></textarea>
+                    </div>
+
+                    <!-- Trade References -->
+                    <div data-id="101" class="section-heading">Trade References</div>
+                    <p data-id="102" class="text-xs text-gray-500 mb-3 -mt-2">List two trade references transacted within the previous 12 months.</p>
+
+                    <div data-id="103" class="mini-card">
+                        <p data-id="104" class="text-xs font-bold text-gray-500 uppercase mb-3">Reference 1</p>
+                        <div data-id="105" class="grid-2">
+                            <div data-id="106">
+                                <label data-id="107" for="ref1-name-8xyz">Name</label>
+                                <input data-id="108" type="text" id="ref1-name-8xyz" name="ref1_name" />
+                            </div>
+                            <div data-id="109">
+                                <label data-id="110" for="ref1-addr-3abc">Address</label>
+                                <input data-id="111" type="text" id="ref1-addr-3abc" name="ref1_address" />
+                            </div>
+                        </div>
+                        <div data-id="112" class="grid-3 mt-3">
+                            <div data-id="113">
+                                <label data-id="114" for="ref1-city-7def">City</label>
+                                <input data-id="115" type="text" id="ref1-city-7def" name="ref1_city" />
+                            </div>
+                            <div data-id="116">
+                                <label data-id="117" for="ref1-state-1ghi">State</label>
+                                <input data-id="118" type="text" id="ref1-state-1ghi" name="ref1_state" />
+                            </div>
+                            <div data-id="119">
+                                <label data-id="120" for="ref1-zip-5jkl">ZIP</label>
+                                <input data-id="121" type="text" id="ref1-zip-5jkl" name="ref1_zip" />
+                            </div>
+                        </div>
+                        <div data-id="122" class="grid-2 mt-3">
+                            <div data-id="123">
+                                <label data-id="124" for="ref1-phone-9mno">Phone</label>
+                                <input data-id="125" type="tel" id="ref1-phone-9mno" name="ref1_phone" />
+                            </div>
+                            <div data-id="126">
+                                <label data-id="127" for="ref1-fax-2pqr">Fax</label>
+                                <input data-id="128" type="tel" id="ref1-fax-2pqr" name="ref1_fax" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-id="129" class="mini-card">
+                        <p data-id="130" class="text-xs font-bold text-gray-500 uppercase mb-3">Reference 2</p>
+                        <div data-id="131" class="grid-2">
+                            <div data-id="132">
+                                <label data-id="133" for="ref2-name-4stu">Name</label>
+                                <input data-id="134" type="text" id="ref2-name-4stu" name="ref2_name" />
+                            </div>
+                            <div data-id="135">
+                                <label data-id="136" for="ref2-addr-8vwx">Address</label>
+                                <input data-id="137" type="text" id="ref2-addr-8vwx" name="ref2_address" />
+                            </div>
+                        </div>
+                        <div data-id="138" class="grid-3 mt-3">
+                            <div data-id="139">
+                                <label data-id="140" for="ref2-city-2yza">City</label>
+                                <input data-id="141" type="text" id="ref2-city-2yza" name="ref2_city" />
+                            </div>
+                            <div data-id="142">
+                                <label data-id="143" for="ref2-state-6bcd">State</label>
+                                <input data-id="144" type="text" id="ref2-state-6bcd" name="ref2_state" />
+                            </div>
+                            <div data-id="145">
+                                <label data-id="146" for="ref2-zip-9efg">ZIP</label>
+                                <input data-id="147" type="text" id="ref2-zip-9efg" name="ref2_zip" />
+                            </div>
+                        </div>
+                        <div data-id="148" class="grid-2 mt-3">
+                            <div data-id="149">
+                                <label data-id="150" for="ref2-phone-3hij">Phone</label>
+                                <input data-id="151" type="tel" id="ref2-phone-3hij" name="ref2_phone" />
+                            </div>
+                            <div data-id="152">
+                                <label data-id="153" for="ref2-fax-7klm">Fax</label>
+                                <input data-id="154" type="tel" id="ref2-fax-7klm" name="ref2_fax" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div data-id="155" class="section-heading">Terms and Conditions</div>
+                    <div data-id="156" class="terms-box">
+                        <p data-id="157"><strong data-id="158">1. Governing Terms.</strong> The terms and conditions of this Agreement shall govern all sales by Seller to Buyer. No terms or conditions contained in Buyer's purchase order or other document that add to, modify or conflict with the terms and conditions of this Agreement shall be binding upon Seller unless specifically accepted in writing by an authorized representative of Seller.</p>
+                        <p data-id="159" class="mt-2"><strong data-id="160">2. Payment.</strong> All invoices are due and payable within thirty (30) days of date of invoice. Past-due invoices shall bear interest at the rate of eighteen percent (18%) per annum or the maximum rate allowed by applicable law, whichever is less, from the date due until paid in full.</p>
+                        <p data-id="161" class="mt-2"><strong data-id="162">3. Returned Checks.</strong> A $15.00 handling fee will be assessed for each check returned for insufficient funds or any other reason.</p>
+                        <p data-id="163" class="mt-2"><strong data-id="164">4. References.</strong> Buyer hereby authorizes Seller to make such credit investigations as Seller deems necessary, including contacting bank and trade references provided herein and obtaining consumer credit reports on any individual guarantor(s).</p>
+                        <p data-id="165" class="mt-2"><strong data-id="166">5. Buyer's Duty to Inspect Deliveries.</strong> Buyer shall inspect all goods upon delivery. Buyer must report to Seller any shortage, damage, or nonconformity within forty-eight (48) hours of delivery. Failure to report within this period shall constitute acceptance of the goods as delivered.</p>
+                        <p data-id="167" class="mt-2"><strong data-id="168">6. Limitation of Liability.</strong> Seller's total liability under this Agreement shall not exceed the purchase price of the goods giving rise to such liability. In no event shall Seller be liable for any indirect, incidental, special, consequential, or punitive damages.</p>
+                        <p data-id="169" class="mt-2"><strong data-id="170">7. Limited Warranty.</strong> Seller warrants to the first retail customer that its products will be free from defects in materials and workmanship for a period of one (1) year from the date of original retail purchase. This warranty is non-transferable and applies only to the original retail purchaser.</p>
+                        <p data-id="171" class="mt-2"><strong data-id="172">8. No Other Warranties.</strong> EXCEPT AS EXPRESSLY SET FORTH HEREIN, SELLER MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p>
+                        <p data-id="173" class="mt-2"><strong data-id="174">9. Collection Costs.</strong> In the event Seller retains an attorney or collection agency to collect amounts owed by Buyer, Buyer agrees to pay all reasonable attorney's fees, collection agency fees, court costs, and other expenses of collection.</p>
+                        <p data-id="175" class="mt-2"><strong data-id="176">10. Governing Law and Venue.</strong> This Agreement shall be governed by and construed in accordance with the laws of the State of Texas. Any suit, action, or proceeding arising out of this Agreement shall be brought exclusively in the state or federal courts located in Dallas County, Texas.</p>
+                        <p data-id="177" class="mt-2"><strong data-id="178">11. Indemnification.</strong> Buyer agrees to indemnify, defend, and hold harmless Seller and its officers, directors, employees, and agents from any and all claims, damages, losses, and expenses (including reasonable attorney's fees) arising out of or related to Buyer's use or resale of the goods.</p>
+                        <p data-id="179" class="mt-2"><strong data-id="180">12. Personal Guaranty.</strong> If required by Seller, the individual(s) signing below as Guarantor(s) personally and unconditionally guarantee the full and prompt payment and performance of all obligations of Buyer to Seller under this Agreement.</p>
+                        <p data-id="181" class="mt-2"><strong data-id="182">13. Entire Agreement.</strong> This Agreement constitutes the entire agreement between the parties with respect to the subject matter hereof and supersedes all prior negotiations, representations, warranties, commitments, offers, and agreements, written or oral.</p>
+                    </div>
+
+                    <div data-id="183" class="checkbox-row mt-3">
+                        <input data-id="184" type="checkbox" id="agree-terms-5nop" name="agree_terms" required />
+                        <label data-id="185" for="agree-terms-5nop">I have read and agree to the Terms and Conditions of Sale above. <span data-id="186" class="req">*</span></label>
+                    </div>
+
+                    <!-- Signatures -->
+                    <div data-id="187" class="section-heading">Signatures</div>
+                    <div data-id="188" class="grid-2">
+                        <div data-id="189">
+                            <p data-id="190" class="text-xs font-bold uppercase text-gray-500 mb-2">Buyer</p>
+                            <!-- Signature Pad -->
+                            <div data-id="191" class="mb-3">
+                                <label data-id="192" for="buyer-sig-canvas">Signature <span data-id="193" class="req">*</span></label>
+                                <canvas data-id="194" id="buyer-sig-canvas" class="sig-pad-canvas"></canvas>
+                                <input data-id="195" type="hidden" name="buyer_signature" id="buyer-sig-data" required />
+                                <div data-id="196" class="sig-pad-actions">
+                                    <button data-id="197" type="button" class="sig-clear-btn" id="buyer-sig-clear">Clear</button>
+                                </div>
+                                <p data-id="198" class="helper-text">Draw your signature above using your mouse or finger.</p>
+                            </div>
+                            <div data-id="199" class="mb-3">
+                                <label data-id="200" for="buyer-name-8qrs">By (Printed Name) <span data-id="201" class="req">*</span></label>
+                                <input data-id="202" type="text" id="buyer-name-8qrs" name="buyer_printed_name" required />
+                            </div>
+                            <div data-id="203" class="mb-3">
+                                <label data-id="204" for="buyer-title-2tuv">Title <span data-id="205" class="req">*</span></label>
+                                <input data-id="206" type="text" id="buyer-title-2tuv" name="buyer_title" required />
+                            </div>
+                            <div data-id="207">
+                                <label data-id="208" for="buyer-date-6wxy">Date <span data-id="209" class="req">*</span></label>
+                                <input data-id="210" type="date" id="buyer-date-6wxy" name="buyer_date" required />
+                            </div>
+                        </div>
+                        <div data-id="211">
+                            <p data-id="212" class="text-xs font-bold uppercase text-gray-500 mb-2">Golden Mattress Co., Inc. — Seller</p>
+                            <p data-id="213" class="sig-line grayed">X ________________</p>
+                            <div data-id="214" class="mb-3">
+                                <label data-id="215" class="grayed">By:</label>
+                                <input data-id="216" type="text" value="For Office Use Only" disabled style="background:#f3f4f6; color:#aaa; font-style:italic;" />
+                            </div>
+                            <div data-id="217" class="mb-3">
+                                <label data-id="218" class="grayed">Title:</label>
+                                <input data-id="219" type="text" disabled style="background:#f3f4f6; color:#aaa;" />
+                            </div>
+                            <div data-id="220">
+                                <label data-id="221" class="grayed">Date:</label>
+                                <input data-id="222" type="text" disabled style="background:#f3f4f6; color:#aaa;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guarantor(s) -->
+                    <div data-id="223" class="section-heading">Guarantor(s)</div>
+                    <p data-id="224" class="text-xs text-gray-500 mb-4 -mt-2 leading-relaxed">For value received and to induce Seller to extend credit to Buyer, the undersigned unconditionally guarantee all obligations owed by Buyer to Seller.</p>
+
+                    <div data-id="225" class="mini-card">
+                        <p data-id="226" class="text-xs font-bold text-gray-500 uppercase mb-2">Guarantor 1</p>
+                        <div data-id="227" class="mb-3">
+                            <label data-id="228">Signature <span data-id="229" class="req">*</span></label>
+                            <canvas data-id="230" id="guar1-sig-canvas" class="sig-pad-canvas"></canvas>
+                            <input data-id="231" type="hidden" id="guar1-sig-data" name="guarantor1_signature" required />
+                            <div data-id="232" class="sig-pad-actions">
+                                <button data-id="233" type="button" class="sig-clear-btn" id="guar1-sig-clear">Clear</button>
+                            </div>
+                            <p data-id="234" class="helper-text">Draw your signature above using your mouse or finger.</p>
+                        </div>
+                        <div data-id="235" class="grid-2">
+                            <div data-id="236">
+                                <label data-id="237" for="guar1-name-3zab">Printed Name <span data-id="238" class="req">*</span></label>
+                                <input data-id="239" type="text" id="guar1-name-3zab" name="guarantor1_name" required />
+                            </div>
+                            <div data-id="240">
+                                <label data-id="241" for="guar1-date-7cde">Date <span data-id="242" class="req">*</span></label>
+                                <input data-id="243" type="date" id="guar1-date-7cde" name="guarantor1_date" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-id="244" class="mini-card">
+                        <p data-id="245" class="text-xs font-bold text-gray-500 uppercase mb-2">Guarantor 2 <span data-id="246" class="text-gray-400 normal-case font-normal">(optional)</span></p>
+                        <div data-id="247" class="mb-3">
+                            <label data-id="248">Signature <span data-id="249" style="font-size:0.75rem;color:#888;font-weight:normal;">(optional)</span></label>
+                            <canvas data-id="250" id="guar2-sig-canvas" class="sig-pad-canvas"></canvas>
+                            <input data-id="251" type="hidden" id="guar2-sig-data" name="guarantor2_signature" />
+                            <div data-id="252" class="sig-pad-actions">
+                                <button data-id="253" type="button" class="sig-clear-btn" id="guar2-sig-clear">Clear</button>
+                            </div>
+                            <p data-id="254" class="helper-text">Draw your signature above using your mouse or finger.</p>
+                        </div>
+                        <div data-id="255" class="grid-2">
+                            <div data-id="256">
+                                <label data-id="257" for="guar2-name-1fgh">Printed Name</label>
+                                <input data-id="258" type="text" id="guar2-name-1fgh" name="guarantor2_name" />
+                            </div>
+                            <div data-id="259">
+                                <label data-id="260" for="guar2-date-5ijk">Date</label>
+                                <input data-id="261" type="date" id="guar2-date-5ijk" name="guarantor2_date" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button data-id="262" type="submit" class="submit-btn mt-6" id="submit-app-9lmn">
+                        <span data-id="263" id="submit-app-text-2opq">Submit Account Application →</span>
+                        <span data-id="264" id="submit-app-spin-6rst" style="display:none;"><span data-id="265" class="spinner"></span></span>
+                    </button>
+
+                    <div data-id="266" class="page-footer">ACCOUNT APPLICATION AND MASTER PURCHASE AGREEMENT</div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ===================== TAB 2: TX Resale Certificate ===================== -->
+        <div data-id="267" id="tab-cert-panel-8uvw" style="display:none;">
+            <div data-id="268" class="bg-white rounded-lg shadow-md p-5 md:p-8">
+                <!-- Banners -->
+                <div data-id="269" class="banner success" id="success-cert-4xyz"></div>
+                <div data-id="270" class="banner error" id="error-cert-7abc"></div>
+
+                <p data-id="271" class="text-sm italic text-gray-600 mb-5 leading-relaxed">Form 01-339 (Rev. 4-13/8) — This certificate should be furnished to the supplier. Do not send the completed certificate to the Comptroller of Public Accounts.</p>
+
+                <form data-id="272" id="form-cert-2def" method="POST" action="https://usebasin.com/f/5c267ff71c4a" enctype="multipart/form-data" novalidate>
+
+                    <input data-id="273" type="hidden" name="form_type" value="TX Resale Certificate" />
+
+                    <!-- Purchaser Information -->
+                    <div data-id="274" class="section-heading">Purchaser Information</div>
+                    <div data-id="275" class="grid-2">
+                        <div data-id="276" class="col-span-full">
+                            <label data-id="277" for="purch-name-6ghi">Name of Purchaser, Firm or Agency <span data-id="278" class="req">*</span></label>
+                            <input data-id="279" type="text" id="purch-name-6ghi" name="purchaser_name" required />
+                        </div>
+                        <div data-id="280">
+                            <label data-id="281" for="purch-phone-9jkl">Phone (Area code and number) <span data-id="282" class="req">*</span></label>
+                            <input data-id="283" type="tel" id="purch-phone-9jkl" name="purchaser_phone" required />
+                        </div>
+                        <div data-id="284"></div>
+                        <div data-id="285" class="col-span-full">
+                            <label data-id="286" for="purch-addr-3mno">Address (Street &amp; number, P.O. Box or Route number) <span data-id="287" class="req">*</span></label>
+                            <input data-id="288" type="text" id="purch-addr-3mno" name="purchaser_address" required />
+                        </div>
+                    </div>
+                    <div data-id="289" class="grid-3 mt-4">
+                        <div data-id="290">
+                            <label data-id="291" for="purch-city-7pqr">City <span data-id="292" class="req">*</span></label>
+                            <input data-id="293" type="text" id="purch-city-7pqr" name="purchaser_city" required />
+                        </div>
+                        <div data-id="294">
+                            <label data-id="295" for="purch-state-1stu">State <span data-id="296" class="req">*</span></label>
+                            <input data-id="297" type="text" id="purch-state-1stu" name="purchaser_state" required />
+                        </div>
+                        <div data-id="298">
+                            <label data-id="299" for="purch-zip-5vwx">ZIP <span data-id="300" class="req">*</span></label>
+                            <input data-id="301" type="text" id="purch-zip-5vwx" name="purchaser_zip" required />
+                        </div>
+                    </div>
+                    <div data-id="302" class="grid-2 mt-4">
+                        <div data-id="303">
+                            <label data-id="304" for="permit-num-8yza">Texas Sales and Use Tax Permit Number <span data-id="305" class="req">*</span></label>
+                            <input data-id="306" type="text" id="permit-num-8yza" name="tx_permit_number" required maxlength="11" pattern="\d{11}" title="Must contain exactly 11 digits" />
+                            <p data-id="307" class="helper-text">Must contain 11 digits</p>
+                        </div>
+                        <div data-id="308">
+                            <label data-id="309" for="oos-num-2bcd">Out-of-state retailer's registration number or RFC number (Mexico)</label>
+                            <input data-id="310" type="text" id="oos-num-2bcd" name="out_of_state_number" />
+                        </div>
+                    </div>
+
+                    <!-- Seller Information (Static / Read-Only) -->
+                    <div data-id="311" class="section-heading">Seller Information</div>
+                    <div data-id="312" class="mb-3">
+                        <label data-id="313" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;">Seller Name</label>
+                        <div data-id="314" style="padding:10px 12px;background:#f4f4f4;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;color:#1a2744;font-weight:600;">Golden Pedic Inc. DBA Golden Mattress Co., Inc.</div>
+                        <input data-id="315" type="hidden" name="seller_name" value="Golden Pedic Inc. DBA Golden Mattress Co., Inc.">
+                    </div>
+                    <div data-id="316" class="mb-3">
+                        <label data-id="317" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;">Street Address</label>
+                        <div data-id="318" style="padding:10px 12px;background:#f4f4f4;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;color:#1a2744;font-weight:600;">1240 Titan Drive</div>
+                        <input data-id="319" type="hidden" name="seller_address" value="1240 Titan Drive">
+                    </div>
+                    <div data-id="320" style="display:grid;grid-template-columns:1fr auto auto;gap:12px;" class="mb-3">
+                        <div data-id="321">
+                            <label data-id="322" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;">City</label>
+                            <div data-id="323" style="padding:10px 12px;background:#f4f4f4;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;color:#1a2744;font-weight:600;">Dallas</div>
+                            <input data-id="324" type="hidden" name="seller_city" value="Dallas">
+                        </div>
+                        <div data-id="325">
+                            <label data-id="326" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;">State</label>
+                            <div data-id="327" style="padding:10px 12px;background:#f4f4f4;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;color:#1a2744;font-weight:600;">TX</div>
+                            <input data-id="328" type="hidden" name="seller_state" value="TX">
+                        </div>
+                        <div data-id="329">
+                            <label data-id="330" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;">ZIP</label>
+                            <div data-id="331" style="padding:10px 12px;background:#f4f4f4;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;color:#1a2744;font-weight:600;">75247</div>
+                            <input data-id="332" type="hidden" name="seller_zip" value="75247">
+                        </div>
+                    </div>
+
+                    <!-- Purchase Details -->
+                    <div data-id="333" class="section-heading">Purchase Details</div>
+                    <div data-id="334" class="mb-3">
+                        <label data-id="335" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;">Description of Items to be Purchased on the Attached Order or Invoice</label>
+                        <div data-id="336" style="padding:10px 12px;background:#f4f4f4;border:1px solid #ddd;border-radius:4px;font-size:0.95rem;color:#1a2744;font-weight:600;">Mattresses and/or foundations</div>
+                        <input data-id="337" type="hidden" name="items_description" value="Mattresses and/or foundations">
+                    </div>
+                    <div data-id="338" class="mt-4">
+                        <label data-id="339" for="biz-desc-8wxy">Description of the type of business activity generally engaged in or type of items normally sold by the purchaser</label>
+                        <textarea data-id="340" id="biz-desc-8wxy" name="business_description" rows="3"></textarea>
+                    </div>
+
+                    <!-- Certificate Statement -->
+                    <div data-id="341" class="section-heading">Certificate Statement</div>
+                    <div data-id="342" class="cert-box">
+                        <p data-id="343">The taxable items described above, or on the attached order or invoice, will be resold, rented or leased by me within the geographical limits of the United States of America, its territories and possessions or within the geographical limits of the United Mexican States, in their present form or attached to other taxable items to be sold.</p>
+                        <p data-id="344" class="mt-2">I understand that if I make any use of the items other than retention, demonstration or display while holding them for sale, lease or rental, I must pay sales tax on the items at the time of use based upon either the purchase price or the fair market rental value for the period of time used.</p>
+                        <p data-id="345" class="mt-2">I understand that it is a criminal offense to give a resale certificate to the seller for taxable items that I know, at the time of purchase, are purchased for use rather than for the purpose of resale, lease or rental, and depending on the amount of tax evaded, the offense may range from a Class C misdemeanor to a felony of the second degree.</p>
+                    </div>
+
+                    <div data-id="346" class="checkbox-row mt-3">
+                        <input data-id="347" type="checkbox" id="agree-cert-2zab" name="certify_statements" required />
+                        <label data-id="348" for="agree-cert-2zab">I certify the above statements are true and correct. <span data-id="349" class="req">*</span></label>
+                    </div>
+
+                    <!-- Document Upload -->
+                    <div data-id="350" class="section-heading" style="margin-top:24px;">Document Upload</div>
+                    <div data-id="351" class="mb-4">
+                        <label data-id="352" style="font-size:0.8rem;font-weight:bold;text-transform:uppercase;color:#555;display:block;margin-bottom:6px;">
+                            Attach Supporting Document <span data-id="353" class="req">*</span>
+                        </label>
+                        <div data-id="354" id="upload-drop-zone" style="border:2px dashed #ccc;border-radius:6px;padding:28px 20px;text-align:center;background:#fafafa;cursor:pointer;transition:border-color 0.2s,background 0.2s;">
+                            <div data-id="355" style="font-size:2rem;margin-bottom:8px;">📎</div>
+                            <p data-id="356" style="font-size:0.9rem;color:#555;margin:0 0 4px;">Drag &amp; drop your file here, or <span data-id="357" style="color:#1a2744;font-weight:bold;text-decoration:underline;">browse</span></p>
+                            <p data-id="358" style="font-size:0.75rem;color:#999;margin:0;">Accepted formats: PDF, JPG, JPEG &nbsp;·&nbsp; Max size: 10 MB</p>
+                        </div>
+                        <input data-id="359" type="file" id="file-upload-input" name="supporting_document" accept=".pdf,.jpg,.jpeg" required style="display:none;">
+                        <div data-id="360" id="file-preview" style="display:none;margin-top:10px;padding:10px 14px;background:#f0f7ff;border:1px solid #b3d4f5;border-radius:4px;align-items:center;justify-content:space-between;gap:10px;">
+                            <div data-id="361" style="display:flex;align-items:center;gap:10px;">
+                                <span data-id="362" id="file-icon" style="font-size:1.4rem;">📄</span>
+                                <div data-id="363">
+                                    <p data-id="364" id="file-name" style="margin:0;font-size:0.875rem;font-weight:bold;color:#1a2744;"></p>
+                                    <p data-id="365" id="file-size" style="margin:0;font-size:0.75rem;color:#666;"></p>
+                                </div>
+                            </div>
+                            <button data-id="366" type="button" id="file-remove-btn" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:#c0392b;padding:0 4px;" title="Remove file">✕</button>
+                        </div>
+                        <div data-id="367" id="file-error" style="display:none;margin-top:6px;font-size:0.8rem;color:#c0392b;"></div>
+                    </div>
+
+                    <!-- Purchaser Signature -->
+                    <div data-id="368" class="section-heading">Purchaser Signature</div>
+                    <div data-id="369" class="grid-3">
+                        <div data-id="370" class="mb-3">
+                            <label data-id="371">Purchaser Signature <span data-id="372" class="req">*</span></label>
+                            <canvas data-id="373" id="purch-sig-canvas" class="sig-pad-canvas"></canvas>
+                            <input data-id="374" type="hidden" id="purch-sig-data" name="purchaser_signature" required />
+                            <div data-id="375" class="sig-pad-actions">
+                                <button data-id="376" type="button" class="sig-clear-btn" id="purch-sig-clear">Clear</button>
+                            </div>
+                            <p data-id="377" class="helper-text">Draw your signature above using your mouse or finger.</p>
+                        </div>
+                        <div data-id="378">
+                            <label data-id="379" for="sig-purch-title-9fgh">Title <span data-id="380" class="req">*</span></label>
+                            <input data-id="381" type="text" id="sig-purch-title-9fgh" name="purchaser_signature_title" required />
+                        </div>
+                        <div data-id="382">
+                            <label data-id="383" for="sig-purch-date-3ijk">Date <span data-id="384" class="req">*</span></label>
+                            <input data-id="385" type="date" id="sig-purch-date-3ijk" name="purchaser_signature_date" required />
+                        </div>
+                    </div>
+
+                    <button data-id="386" type="submit" class="submit-btn mt-6" id="submit-cert-7lmn">
+                        <span data-id="387" id="submit-cert-text-1opq">Submit Resale Certificate →</span>
+                        <span data-id="388" id="submit-cert-spin-5rst" style="display:none;"><span data-id="389" class="spinner"></span></span>
+                    </button>
+
+                    <div data-id="390" class="page-footer">TEXAS SALES AND USE TAX RESALE CERTIFICATE — Page 1 of 1</div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer data-id="391" class="text-center text-xs text-gray-400 pb-6">Made by Copilot</footer>
+
+    <script>
+        // Icons — progressive enhancement
+        if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+            lucide.createIcons();
+        }
+
+        // ==================== Tab Switching ====================
+        var tabAppBtn = document.getElementById('tab-app-btn-3fzq');
+        var tabCertBtn = document.getElementById('tab-cert-btn-9tpx');
+        var tabAppPanel = document.getElementById('tab-app-panel-5mzr');
+        var tabCertPanel = document.getElementById('tab-cert-panel-8uvw');
+
+        function switchTab(tab) {
+            if (tab === 'app') {
+                tabAppPanel.style.display = '';
+                tabCertPanel.style.display = 'none';
+                tabAppBtn.classList.add('active');
+                tabCertBtn.classList.remove('active');
+            } else {
+                tabAppPanel.style.display = 'none';
+                tabCertPanel.style.display = '';
+                tabCertBtn.classList.add('active');
+                tabAppBtn.classList.remove('active');
+            }
+        }
+
+        tabAppBtn.addEventListener('click', function () { switchTab('app'); });
+        tabCertBtn.addEventListener('click', function () { switchTab('cert'); });
+
+        // ==================== Shared Signature Pad Functions ====================
+        function initSigPad(canvasId, hiddenId) {
+            var canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var isDrawing = false;
+            var hasDrawn = false;
+
+            function resizeCanvas() {
+                var tempImage = null;
+                if (hasDrawn) {
+                    try {
+                        tempImage = new Image();
+                        tempImage.src = canvas.toDataURL('image/png');
+                    } catch (e) { tempImage = null; }
+                }
+
+                var rect = canvas.getBoundingClientRect();
+                var dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#1a2744';
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                if (tempImage && hasDrawn) {
+                    tempImage.onload = function () {
+                        ctx.drawImage(tempImage, 0, 0, rect.width, rect.height);
+                    };
+                    if (tempImage.complete) {
+                        ctx.drawImage(tempImage, 0, 0, rect.width, rect.height);
+                    }
+                }
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function getPos(e) {
+                var rect = canvas.getBoundingClientRect();
+                if (e.touches && e.touches.length > 0) {
+                    return {
+                        x: e.touches[0].clientX - rect.left,
+                        y: e.touches[0].clientY - rect.top
+                    };
+                }
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+            }
+
+            function startDraw(e) {
+                isDrawing = true;
+                hasDrawn = true;
+                var pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                var pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function endDraw() {
+                if (!isDrawing) return;
+                isDrawing = false;
+                ctx.closePath();
+                var hiddenInput = document.getElementById(hiddenId);
+                hiddenInput.value = canvas.toDataURL('image/png');
+                hiddenInput.setCustomValidity('');
+            }
+
+            // Mouse events
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', endDraw);
+            canvas.addEventListener('mouseleave', endDraw);
+
+            // Touch events
+            canvas.addEventListener('touchstart', function (e) {
+                e.preventDefault();
+                startDraw(e);
+            }, { passive: false });
+            canvas.addEventListener('touchmove', function (e) {
+                e.preventDefault();
+                draw(e);
+            }, { passive: false });
+            canvas.addEventListener('touchend', function (e) {
+                e.preventDefault();
+                endDraw();
+            });
+            canvas.addEventListener('touchcancel', function (e) {
+                e.preventDefault();
+                endDraw();
+            });
+        }
+
+        function clearSigPad(canvasId, hiddenId) {
+            var canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var rect = canvas.getBoundingClientRect();
+            ctx.clearRect(0, 0, rect.width, rect.height);
+            var hiddenInput = document.getElementById(hiddenId);
+            hiddenInput.value = '';
+        }
+
+        // ==================== Initialize All Signature Pads ====================
+        initSigPad('buyer-sig-canvas', 'buyer-sig-data');
+        initSigPad('guar1-sig-canvas', 'guar1-sig-data');
+        initSigPad('guar2-sig-canvas', 'guar2-sig-data');
+        initSigPad('purch-sig-canvas', 'purch-sig-data');
+
+        // Clear button event listeners
+        document.getElementById('buyer-sig-clear').addEventListener('click', function () {
+            clearSigPad('buyer-sig-canvas', 'buyer-sig-data');
+        });
+        document.getElementById('guar1-sig-clear').addEventListener('click', function () {
+            clearSigPad('guar1-sig-canvas', 'guar1-sig-data');
+        });
+        document.getElementById('guar2-sig-clear').addEventListener('click', function () {
+            clearSigPad('guar2-sig-canvas', 'guar2-sig-data');
+        });
+        document.getElementById('purch-sig-clear').addEventListener('click', function () {
+            clearSigPad('purch-sig-canvas', 'purch-sig-data');
+        });
+
+        // ==================== Document Upload ====================
+        var uploadDropZone = document.getElementById('upload-drop-zone');
+        var fileUploadInput = document.getElementById('file-upload-input');
+        var fileRemoveBtn = document.getElementById('file-remove-btn');
+
+        uploadDropZone.addEventListener('click', function () {
+            fileUploadInput.click();
+        });
+
+        uploadDropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            uploadDropZone.style.borderColor = '#f5c518';
+            uploadDropZone.style.background = '#fffbea';
+        });
+
+        uploadDropZone.addEventListener('dragleave', function () {
+            uploadDropZone.style.borderColor = '#ccc';
+            uploadDropZone.style.background = '#fafafa';
+        });
+
+        uploadDropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            uploadDropZone.style.borderColor = '#ccc';
+            uploadDropZone.style.background = '#fafafa';
+            var file = e.dataTransfer.files[0];
+            if (!file) return;
+            var dt = new DataTransfer();
+            dt.items.add(file);
+            fileUploadInput.files = dt.files;
+            validateAndShowFile(file, fileUploadInput);
+        });
+
+        fileUploadInput.addEventListener('change', function () {
+            var file = fileUploadInput.files[0];
+            if (file) validateAndShowFile(file, fileUploadInput);
+        });
+
+        fileRemoveBtn.addEventListener('click', function () {
+            removeFile();
+        });
+
+        function validateAndShowFile(file, input) {
+            var errorEl = document.getElementById('file-error');
+            var preview = document.getElementById('file-preview');
+            var allowed = ['application/pdf', 'image/jpeg'];
+            var allowedExts = ['.pdf', '.jpg', '.jpeg'];
+            var ext = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+            var maxBytes = 10 * 1024 * 1024; // 10 MB
+
+            if (allowed.indexOf(file.type) === -1 && allowedExts.indexOf(ext) === -1) {
+                errorEl.textContent = '❌ Invalid file type. Please upload a PDF, JPG, or JPEG.';
+                errorEl.style.display = 'block';
+                preview.style.display = 'none';
+                input.value = '';
+                return;
+            }
+            if (file.size > maxBytes) {
+                errorEl.textContent = '❌ File is too large. Maximum size is 10 MB.';
+                errorEl.style.display = 'block';
+                preview.style.display = 'none';
+                input.value = '';
+                return;
+            }
+
+            errorEl.style.display = 'none';
+            document.getElementById('file-name').textContent = file.name;
+            document.getElementById('file-size').textContent = (file.size / 1024).toFixed(1) + ' KB';
+            document.getElementById('file-icon').textContent = file.type === 'application/pdf' ? '📋' : '🖼️';
+            preview.style.display = 'flex';
+        }
+
+        function removeFile() {
+            fileUploadInput.value = '';
+            document.getElementById('file-preview').style.display = 'none';
+            document.getElementById('file-error').style.display = 'none';
+        }
+
+        // ==================== Signature Validation on Form Submit ====================
+        var formApp = document.getElementById('form-app-1abc');
+        formApp.addEventListener('submit', function () {
+            var buyerSigData = document.getElementById('buyer-sig-data');
+            if (!buyerSigData.value) {
+                buyerSigData.setCustomValidity('Please provide your signature.');
+            } else {
+                buyerSigData.setCustomValidity('');
+            }
+
+            var guar1SigData = document.getElementById('guar1-sig-data');
+            if (!guar1SigData.value) {
+                guar1SigData.setCustomValidity("Please provide Guarantor 1's signature.");
+            } else {
+                guar1SigData.setCustomValidity('');
+            }
+        }, true); // capture phase — runs before main handler
+
+        // TX Resale Certificate signature validation
+        var formCert = document.getElementById('form-cert-2def');
+        formCert.addEventListener('submit', function () {
+            var purchSigData = document.getElementById('purch-sig-data');
+            if (!purchSigData.value) {
+                purchSigData.setCustomValidity('Please provide your signature.');
+            } else {
+                purchSigData.setCustomValidity('');
+            }
+        }, true); // capture phase — runs before main handler
+
+        // ==================== Form Submission ====================
+
+        function formDataToObject(form) {
+            var fd = new FormData(form);
+            var obj = {};
+            fd.forEach(function (value, key) {
+                obj[key] = value;
+            });
+            // Checkboxes
+            form.querySelectorAll('input[type="checkbox"]').forEach(function (cb) {
+                obj[cb.name] = cb.checked;
+            });
+            return obj;
+        }
+
+        function showBanner(el, show) {
+            el.style.display = show ? 'block' : 'none';
+        }
+
+        function handleSubmit(form, successBanner, errorBanner, submitBtn, textSpan, spinSpan) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Validate native HTML5
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                // Custom permit number validation (tab 2)
+                var permitField = form.querySelector('[name="tx_permit_number"]');
+                if (permitField && permitField.value && !/^\d{11}$/.test(permitField.value)) {
+                    permitField.setCustomValidity('Texas Sales and Use Tax Permit Number must contain exactly 11 digits.');
+                    form.reportValidity();
+                    permitField.setCustomValidity('');
+                    return;
+                }
+
+                showBanner(successBanner, false);
+                showBanner(errorBanner, false);
+
+                submitBtn.disabled = true;
+                textSpan.style.display = 'none';
+                spinSpan.style.display = '';
+
+                var data = formDataToObject(form);
+
+                fetch("https://gmc-form-backend.onrender.com/submit", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(function (res) {
+                    if (!res.ok) {
+                        return res.text().then(function (t) { throw new Error(t || 'Server error (' + res.status + ')'); });
+                    }
+                    return res.json().catch(function () { return {}; });
+                })
+                .then(function () {
+                    successBanner.textContent = '✅ Form submitted successfully! A copy has been sent to gmcdallas09@gmail.com.';
+                    showBanner(successBanner, true);
+                    form.reset();
+                    // Clear all signature pads in this form
+                    clearSigPad('buyer-sig-canvas', 'buyer-sig-data');
+                    clearSigPad('guar1-sig-canvas', 'guar1-sig-data');
+                    clearSigPad('guar2-sig-canvas', 'guar2-sig-data');
+                    clearSigPad('purch-sig-canvas', 'purch-sig-data');
+                    // Clear file upload
+                    removeFile();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                })
+                .catch(function (err) {
+                    errorBanner.textContent = '❌ Submission failed: ' + (err.message || 'An unexpected error occurred.');
+                    showBanner(errorBanner, true);
+                })
+                .finally(function () {
+                    submitBtn.disabled = false;
+                    textSpan.style.display = '';
+                    spinSpan.style.display = 'none';
+                });
+            });
+        }
+
+        // Account Application form
+        handleSubmit(
+            document.getElementById('form-app-1abc'),
+            document.getElementById('success-app-8kql'),
+            document.getElementById('error-app-2vnr'),
+            document.getElementById('submit-app-9lmn'),
+            document.getElementById('submit-app-text-2opq'),
+            document.getElementById('submit-app-spin-6rst')
+        );
+
+        // TX Resale Certificate form
+        handleSubmit(
+            document.getElementById('form-cert-2def'),
+            document.getElementById('success-cert-4xyz'),
+            document.getElementById('error-cert-7abc'),
+            document.getElementById('submit-cert-7lmn'),
+            document.getElementById('submit-cert-text-1opq'),
+            document.getElementById('submit-cert-spin-5rst')
+        );
+    </script>
+    <script src="form.js"></script>
+</body>
+</html>
