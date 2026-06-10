@@ -1,36 +1,36 @@
 console.log("form.js loaded");
 
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("form-app-1abc");
+//document.addEventListener("DOMContentLoaded", () => {
+//    const form = document.getElementById("form-app-1abc");
 
-    if (!form) {
-        console.error("Form not found");
-        return;
-    }
+  //  if (!form) {
+    //    console.error("Form not found");
+      //  return;
+    // }
 
-    form.addEventListener("submit", async (e) => {
-        console.log("Submit handler triggered");
-        e.preventDefault();
+    //form.addEventListener("submit", async (e) => {
+      //  console.log("Submit handler triggered");
+        //e.preventDefault();
 
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+        //const formData = new FormData(form);
+        //const data = Object.fromEntries(formData.entries());
 
-        try {
-            const res = await fetch("https://gmc-form-backend.onrender.com/submit", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+        //try {
+          //  const res = await fetch("https://gmc-form-backend.onrender.com/submit", {
+            //    method: "POST",
+              //  headers: { "Content-Type": "application/json" },
+                //body: JSON.stringify(data)
+           // });
 
-            if (!res.ok) {
-                throw new Error("Submission failed");
-            }
+            //if (!res.ok) {
+              //  throw new Error("Submission failed");
+            // }
 
-            alert("Form submitted successfully!");
-            form.reset();
-        } catch (err) {
-            alert("❌ Submission failed: " + err.message);
-        }
-    });
-});
+            // alert("Form submitted successfully!");
+            // form.reset();
+        // } catch (err) {
+       //     alert("❌ Submission failed: " + err.message);
+//        }
+//    });
+// });
 
