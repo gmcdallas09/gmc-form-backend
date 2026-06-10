@@ -1139,11 +1139,7 @@
 
                 var data = formDataToObject(form);
 
-                fetch("https://gmc-form-backend.onrender.com/submit", {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                })
+                                })
                 .then(function (res) {
                     if (!res.ok) {
                         return res.text().then(function (t) { throw new Error(t || 'Server error (' + res.status + ')'); });
